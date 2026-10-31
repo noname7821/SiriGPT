@@ -8,15 +8,38 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git wget tar dpkg-dev xz-utils clang libclang-dev binutils
 
       - name: Install Theos
         run: |
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+
+      - name: Install iOS toolchain
+        run: |
+          mkdir -p $THEOS/toolchain/linux/iphone
+          cd $THEOS/toolchain/linux/iphone
+          wget -q https://github.com/theos/toolchain/releases/download/iphone-17.0/clang-17.0.tar.xz || true
+          if [ ! -f clang-17.0.tar.xz ]; then
+            wget -q https://github.com/theos/toolchain/releases/download/iphone-15.0/clang-15.0.tar.xz || true
+          fi
+          if [ -f *.tar.xz ]; then
+            tar -xf *.tar.xz
+            rm -f *.tar.xz
+          fi
+
+      - name: Install iOS SDKs
+        run: |
+          rm -rf $THEOS/sdks
+          git clone --depth 1 https://github.com/theos/sdks.git $THEOS/sdks
 
       - name: Build package
         run: |
