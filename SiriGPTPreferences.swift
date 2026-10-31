@@ -4,7 +4,7 @@ import Preferences
 @objc(SiriGPTPreferencesListController)
 class SiriGPTPreferencesListController: PSListController {
 
-    override var specifiers: [Any]! {
+    override var specifiers: NSMutableArray! {
         get {
             if _specifiers == nil {
                 _specifiers = self.loadSpecifiers(fromPlistName: "Root", target: self)
