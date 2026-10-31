@@ -9,6 +9,7 @@ SiriGPT_LDFLAGS = -lsubstitute
 SiriGPT_INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries
 SiriGPT_ARCHS = arm64 arm64e
 TARGET_IPHONEOS_DEPLOYMENT_VERSION = 14.0
+SiriGPT_CFLAGS = -I.
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
