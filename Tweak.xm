@@ -7,7 +7,7 @@ static NSString *const kChatGPTScheme = @"openai-chatgpt://";
 
 @interface SiriGPTHelper : NSObject
 + (BOOL)isEnabled;
-+ (void)sendToChatGPTApp:(NSString *)query;
++ (void)askChatGPT:(NSString *)query;
 + (void)speak:(NSString *)text;
 @end
 
@@ -25,9 +25,9 @@ static NSString *const kChatGPTScheme = @"openai-chatgpt://";
     [synth speakUtterance:utt];
 }
 
-+ (void)sendToChatGPTApp:(NSString *)query {
++ (void)askChatGPT:(NSString *)query {
     NSString *encoded = [query stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSString *urlString = [NSString stringWithFormat:@"%@x-callback-url/ask?text=%@&x-success=sirigpt://result?answer=", kChatGPTScheme, encoded];
+    NSString *urlString = [NSString stringWithFormat:@"%@x-callback-url/ask?text=%@", kChatGPTScheme, encoded];
     NSURL *url = [NSURL URLWithString:urlString];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
@@ -52,7 +52,7 @@ static NSString *const kChatGPTScheme = @"openai-chatgpt://";
     %orig(text);
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kEnabledKey] && text && text.length > 0) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [SiriGPTHelper sendToChatGPTApp:text];
+            [SiriGPTHelper askChatGPT:text];
         });
     }
 }

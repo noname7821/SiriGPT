@@ -24,11 +24,11 @@ dpkg -i com.ofx.sirigpt_*.deb
 killall -9 SpringBoard
 ```
 
-Open Settings → SiriGPT, enable the toggle. Activate Siri and ask something — it opens ChatGPT on your phone and speaks the answer back.
+Open Settings → SiriGPT, enable the toggle. Activate Siri and ask something — ChatGPT app opens to answer, then speaks back.
 
-## Gotchas
-- Requires the ChatGPT app installed from the App Store
-- SiriUI class names in Tweak.xm may need adjusting per iOS version — use class-dump to verify
-- ChatGPT URL scheme (`openai-chatgpt://`) may change between app versions
+## Honest limitation
+iOS does not allow one app to silently query another app in the background without the target app's cooperation. ChatGPT's URL scheme will open the app briefly. True silent background querying requires either:
+- ChatGPT app exposing a background URL handler / XPC service, or
+- A direct OpenAI API key (not included here)
 
 6767 — ollie, out.
