@@ -15,22 +15,30 @@ jobs:
 
       - name: Build package
         run: |
+          set -e
           sudo apt-get update -qq
-          sudo apt-get install -y -qq git wget tar dpkg-dev xz-utils clang libclang-dev binutils
+          sudo apt-get install -y -qq git wget tar dpkg-dev xz-utils clang libclang-dev binutils dpkg
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           export THEOS=$HOME/theos
           mkdir -p $THEOS/toolchain/linux/iphone
           cd $THEOS/toolchain/linux/iphone
-          wget -q https://github.com/theos/toolchain/releases/download/iphone-17.0/clang-17.0.tar.xz || true
-          if [ -f clang-17.0.tar.xz ]; then tar -xf clang-17.0.tar.xz && rm -f clang-17.0.tar.xz; fi
+          wget -q https://github.com/theos/toolchain/releases/download/iphone-16.0/clang-16.0.tar.xz || \
+          wget -q https://github.com/theos/toolchain/releases/download/iphone-15.0/clang-15.0.tar.xz || \
+          echo "WARNING: toolchain download failed, will try system clang"
+          if [ -f *.tar.xz ]; then tar -xf *.tar.xz && rm -f *.tar.xz; fi
           rm -rf $THEOS/sdks
           git clone --depth 1 https://github.com/theos/sdks.git $THEOS/sdks
           cd /home/runner/work/SiriGPT/SiriGPT
-          make package 2>&1 || true
+          make package
+          echo "=== packages directory ==="
+          ls -la packages/ 2>/dev/null || echo "no packages dir"
+          echo "=== all .deb files ==="
+          find . -name "*.deb" 2>/dev/null || echo "no .deb files found"
 
       - name: Upload deb artifact
         uses: actions/upload-artifact@v4
         with:
           name: sirigpt-deb
-          path: packages/*.deb
-          if-no-files-found: ignore
+          path: |
+            packages/*.deb
+            *.deb
