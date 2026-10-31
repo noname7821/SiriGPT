@@ -1,0 +1,9 @@
+Package: com.ofx.sirigpt
+Name: SiriGPT
+Depends: substitute, preferenceloader
+Version: 1.0.0~ios14plus
+Architecture: iphoneos-arm64
+Description: Connect Siri to ChatGPT via OpenAI API. Hooks Siri, ships your query to ChatGPT, speaks the answer back. Configure your OpenAI API key in Settings.
+Maintainer: ofx
+Section: Tweaks
+Homepage: https://github.com/ofx/sirigpt

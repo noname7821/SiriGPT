@@ -1,0 +1,24 @@
+include $(THEOS)/makefiles/common.mk
+
+TWEAK_NAME = SiriGPT
+
+SiriGPT_FILES = Tweak.xm
+SiriGPT_FRAMEWORKS = UIKit Foundation AVFoundation
+SiriGPT_PRIVATE_FRAMEWORKS = SiriUI
+SiriGPT_LDFLAGS = -lsubstitute
+SiriGPT_INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries
+
+include $(THEOS_MAKE_PATH)/tweak.mk
+
+BUNDLE_NAME = SiriGPTPrefs
+
+SiriGPTPrefs_FILES = SiriGPTPreferences.swift
+SiriGPTPrefs_INSTALL_PATH = /Library/PreferenceBundles
+SiriGPTPrefs_FRAMEWORKS = UIKit
+SiriGPTPrefs_PRIVATE_FRAMEWORKS = Preferences
+SiriGPTPrefs_CFLAGS = -fobjc-arc -std=c++14
+
+include $(THEOS_MAKE_PATH)/bundle.mk
+
+after-install::
+	install.exec "killall -9 SpringBoard"
