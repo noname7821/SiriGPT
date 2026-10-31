@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-#import <substitute.h>
 
 static NSString *const kAPIKeyKey = @"SiriGPT_APIKey";
 static NSString *const kEnabledKey  = @"SiriGPT_Enabled";
