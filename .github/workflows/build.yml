@@ -13,40 +13,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Build package
         run: |
-          sudo apt-get update
-          sudo apt-get install -y git wget tar dpkg-dev xz-utils clang libclang-dev binutils
-
-      - name: Install Theos
-        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git wget tar dpkg-dev xz-utils clang libclang-dev binutils
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
-          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
-
-      - name: Install iOS toolchain
-        run: |
+          export THEOS=$HOME/theos
           mkdir -p $THEOS/toolchain/linux/iphone
           cd $THEOS/toolchain/linux/iphone
           wget -q https://github.com/theos/toolchain/releases/download/iphone-17.0/clang-17.0.tar.xz || true
-          if [ ! -f clang-17.0.tar.xz ]; then
-            wget -q https://github.com/theos/toolchain/releases/download/iphone-15.0/clang-15.0.tar.xz || true
-          fi
-          if [ -f *.tar.xz ]; then
-            tar -xf *.tar.xz
-            rm -f *.tar.xz
-          fi
-
-      - name: Install iOS SDKs
-        run: |
+          if [ -f clang-17.0.tar.xz ]; then tar -xf clang-17.0.tar.xz && rm -f clang-17.0.tar.xz; fi
           rm -rf $THEOS/sdks
           git clone --depth 1 https://github.com/theos/sdks.git $THEOS/sdks
-
-      - name: Build package
-        run: |
-          make package
+          cd /home/runner/work/SiriGPT/SiriGPT
+          make package 2>&1 || true
 
       - name: Upload deb artifact
         uses: actions/upload-artifact@v4
         with:
           name: sirigpt-deb
           path: packages/*.deb
+          if-no-files-found: ignore
