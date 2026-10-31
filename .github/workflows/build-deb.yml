@@ -37,16 +37,21 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-          git clone --depth=1 https://github.com/theos/theos.git "$THEOS"
+          git clone --depth=1 --recurse-submodules https://github.com/theos/theos.git "$THEOS"
+          ls -la "$THEOS" || true
+          ls -la "$THEOS/bin" || true
+          test -f "$THEOS/bin/dm.pl" || { echo "dm.pl missing"; exit 1; }
           echo "THEOS=$THEOS" >> "$GITHUB_ENV"
-          echo "PATH=$THEOS/bin:$PATH" >> "$GITHUB_ENV"
-          echo "THEOS_DEVICE_IP=127.0.0.1" >> "$GITHUB_ENV"
+          echo "PATH=$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" >> "$GITHUB_ENV"
 
       - name: Build deb package
         shell: bash
         run: |
           set -euxo pipefail
           export PATH="$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+          echo "PATH=$PATH"
+          which dm.pl || true
+          ls -l "$THEOS/bin/dm.pl" || true
           make clean || true
           make package
 
