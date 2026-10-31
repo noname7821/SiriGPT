@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git wget tar dpkg-dev
+          sudo apt-get install -y git wget tar dpkg-dev xz-utils clang libclang-dev
 
       - name: Install Theos
         run: |
@@ -25,7 +25,7 @@ jobs:
 
       - name: Install iOS toolchain
         run: |
-          $THEOS/bin/theos-toolchain --install=iphone || true
+          $THEOS/bin/theos-toolchain --install=iphone
 
       - name: Install iOS SDKs
         run: |
