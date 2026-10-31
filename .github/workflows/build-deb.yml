@@ -50,8 +50,8 @@ jobs:
           set -euxo pipefail
           export PATH="$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
           echo "PATH=$PATH"
-          which dm.pl || true
-          ls -l "$THEOS/bin/dm.pl" || true
+          which dm.pl
+          ls -l "$THEOS/bin/dm.pl"
           make clean || true
           make package
 
