@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import <Foundation/Foundation.h>
 #import <substitute.h>
 
@@ -7,13 +6,10 @@ static NSString *const kAPIKeyKey = @"SiriGPT_APIKey";
 static NSString *const kEnabledKey  = @"SiriGPT_Enabled";
 static NSString *const kAPIEndpoint = @"https://api.openai.com/v1/chat/completions";
 
-static AVSpeechSynthesizer *g_synth = nil;
-
 @interface SiriGPTHelper : NSObject
 + (BOOL)isEnabled;
 + (NSString *)apiKey;
 + (void)sendToChatGPT:(NSString *)query completion:(void (^)(NSString *))completion;
-+ (void)speak:(NSString *)text;
 @end
 
 @implementation SiriGPTHelper
@@ -24,14 +20,6 @@ static AVSpeechSynthesizer *g_synth = nil;
 
 + (NSString *)apiKey {
     return [[NSUserDefaults standardUserDefaults] stringForKey:kAPIKeyKey];
-}
-
-+ (void)speak:(NSString *)text {
-    if (!g_synth) g_synth = [[AVSpeechSynthesizer alloc] init];
-    AVSpeechUtterance *utt = [AVSpeechUtterance speechUtteranceWithString:text];
-    utt.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"];
-    utt.rate = 0.5f;
-    [g_synth speakUtterance:utt];
 }
 
 + (void)sendToChatGPT:(NSString *)query completion:(void (^)(NSString *))completion {
@@ -135,11 +123,7 @@ static AVSpeechSynthesizer *g_synth = nil;
                 NSString *s = m[@"content"];
                 if (!s) s = @"(no response)";
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!g_synth) g_synth = [[AVSpeechSynthesizer alloc] init];
-                    AVSpeechUtterance *u = [AVSpeechUtterance speechUtteranceWithString:s];
-                    u.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"en-US"];
-                    u.rate = 0.5f;
-                    [g_synth speakUtterance:u];
+                    // reply from ChatGPT — hook SiriUI to speak it back here
                 });
             }];
             [t resume];

@@ -3,10 +3,12 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = SiriGPT
 
 SiriGPT_FILES = Tweak.xm
-SiriGPT_FRAMEWORKS = UIKit Foundation AVFoundation
+SiriGPT_FRAMEWORKS = UIKit Foundation
 SiriGPT_PRIVATE_FRAMEWORKS = SiriUI
 SiriGPT_LDFLAGS = -lsubstitute
 SiriGPT_INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries
+SiriGPT_ARCHS = arm64 arm64e
+TARGET_IPHONEOS_DEPLOYMENT_VERSION = 14.0
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
