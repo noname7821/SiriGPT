@@ -19,6 +19,7 @@ SiriGPTPrefs_INSTALL_PATH = /Library/PreferenceBundles
 SiriGPTPrefs_FRAMEWORKS = UIKit
 SiriGPTPrefs_CFLAGS = -fobjc-arc
 SiriGPTPrefs_ARCHS = arm64 arm64e
+SiriGPTPrefs_DEPLOYMENT_TARGET = 14.0
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 
