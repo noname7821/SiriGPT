@@ -6,10 +6,10 @@ class SiriGPTPreferencesListController: PSListController {
 
     override var specifiers: NSMutableArray! {
         get {
-            if _specifiers == nil {
-                _specifiers = self.loadSpecifiers(fromPlistName: "Root", target: self)
+            if super.specifiers == nil {
+                super.specifiers = NSMutableArray(array: self.loadSpecifiers(fromPlistName: "Root", target: self) ?? [])
             }
-            return _specifiers
+            return super.specifiers
         }
         set {
             super.specifiers = newValue
