@@ -24,18 +24,17 @@ jobs:
           sudo xcodebuild -license accept || true
           brew update
           brew install --quiet dpkg ldid
-
           echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
           echo "/usr/local/bin" >> "$GITHUB_PATH"
 
-      - name: Verify tools
+      - name: Verify ldid and toolchain
         shell: bash
         run: |
           set -euxo pipefail
           export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
           which ldid
           ldid -h
-          which dm.pl || true
+          echo "PATH=$PATH"
 
       - name: Install Theos
         shell: bash
@@ -50,6 +49,7 @@ jobs:
         run: |
           set -euxo pipefail
           export PATH="$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
+          echo "PATH=$PATH"
           which ldid
           ldid -h
           which dm.pl
