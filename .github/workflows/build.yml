@@ -23,18 +23,13 @@ jobs:
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
-      - name: Install iOS SDK
+      - name: Install iOS toolchain
         run: |
-          mkdir -p $THEOS/sdks
-          cd $THEOS/sdks
-          $THEOS/bin/theos-sdk --install=latest 2>/dev/null || true
-          if [ ! -d "$THEOS/sdks/iPhoneOS*.sdk" ]; then
-            curl -L -s -o sdk.tar.bz2 https://github.com/theos/sdks/raw/main/SDK/iPhoneOS17.2.sdk.tar.bz2 || curl -L -s -o sdk.tar.bz2 https://github.com/theos/sdks/raw/master/SDK/iPhoneOS17.2.sdk.tar.bz2 || true
-            if [ -f sdk.tar.bz2 ]; then
-              tar -xf sdk.tar.bz2
-              rm -f sdk.tar.bz2
-            fi
-          fi
+          $THEOS/bin/theos-toolchain --install=iphone || true
+
+      - name: Install iOS SDKs
+        run: |
+          git clone --depth 1 https://github.com/theos/sdks.git $THEOS/sdks
 
       - name: Build package
         run: |
