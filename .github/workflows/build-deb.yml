@@ -26,6 +26,13 @@ jobs:
           brew update
           brew install --quiet dpkg ldid
 
+          echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
+          echo "/usr/local/bin" >> "$GITHUB_PATH"
+          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+          which ldid
+          ldid -h
+
       - name: Install Theos
         shell: bash
         run: |
@@ -38,6 +45,7 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
+          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
           make clean || true
           make package
 
