@@ -4,7 +4,6 @@ TWEAK_NAME = SiriGPT
 
 SiriGPT_FILES = Tweak.xm
 SiriGPT_FRAMEWORKS = UIKit Foundation
-SiriGPT_PRIVATE_FRAMEWORKS = SiriUI
 SiriGPT_INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries
 SiriGPT_ARCHS = arm64 arm64e
 TARGET_IPHONEOS_DEPLOYMENT_VERSION = 14.0
