@@ -1,0 +1,49 @@
+name: Build SiriGPT .deb
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-deb:
+    runs-on: macos-14
+
+    env:
+      THEOS: /tmp/theos
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        shell: bash
+        run: |
+          set -euxo pipefail
+          xcode-select --install || true
+          sudo xcodebuild -license accept || true
+          brew update
+          brew install --quiet dpkg ldid
+
+      - name: Install Theos
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git clone --depth=1 https://github.com/theos/theos.git "$THEOS"
+          echo "THEOS=$THEOS" >> "$GITHUB_ENV"
+          echo "THEOS_DEVICE_IP=127.0.0.1" >> "$GITHUB_ENV"
+
+      - name: Build deb package
+        shell: bash
+        run: |
+          set -euxo pipefail
+          make clean || true
+          make package
+
+      - name: Upload deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sirigpt-deb
+          path: packages/*.deb
+          if-no-files-found: error
