@@ -9,7 +9,6 @@ on:
 jobs:
   build-deb:
     runs-on: macos-15
-
     env:
       THEOS: /tmp/theos
 
@@ -28,19 +27,21 @@ jobs:
 
           echo "/opt/homebrew/bin" >> "$GITHUB_PATH"
           echo "/usr/local/bin" >> "$GITHUB_PATH"
-          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
+      - name: Verify tools
+        shell: bash
+        run: |
+          set -euxo pipefail
+          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
           which ldid
           ldid -h
+          which dm.pl || true
 
       - name: Install Theos
         shell: bash
         run: |
           set -euxo pipefail
           git clone --depth=1 --recurse-submodules https://github.com/theos/theos.git "$THEOS"
-          ls -la "$THEOS" || true
-          ls -la "$THEOS/bin" || true
-          test -f "$THEOS/bin/dm.pl" || { echo "dm.pl missing"; exit 1; }
           echo "THEOS=$THEOS" >> "$GITHUB_ENV"
           echo "PATH=$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" >> "$GITHUB_ENV"
 
@@ -49,9 +50,9 @@ jobs:
         run: |
           set -euxo pipefail
           export PATH="$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
-          echo "PATH=$PATH"
+          which ldid
+          ldid -h
           which dm.pl
-          ls -l "$THEOS/bin/dm.pl"
           make clean || true
           make package
 
