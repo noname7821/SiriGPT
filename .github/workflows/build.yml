@@ -23,9 +23,10 @@ jobs:
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
-      - name: Install iOS toolchain
+      - name: Install iOS toolchain and SDK
         run: |
           $HOME/theos/bin/theos-toolchain --install=iphone || true
+          $HOME/theos/bin/theos-sdk --install=latest || true
 
       - name: Build package
         run: |
