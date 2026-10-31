@@ -39,13 +39,14 @@ jobs:
           set -euxo pipefail
           git clone --depth=1 https://github.com/theos/theos.git "$THEOS"
           echo "THEOS=$THEOS" >> "$GITHUB_ENV"
+          echo "PATH=$THEOS/bin:$PATH" >> "$GITHUB_ENV"
           echo "THEOS_DEVICE_IP=127.0.0.1" >> "$GITHUB_ENV"
 
       - name: Build deb package
         shell: bash
         run: |
           set -euxo pipefail
-          export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+          export PATH="$THEOS/bin:/opt/homebrew/bin:/usr/local/bin:$PATH"
           make clean || true
           make package
 
