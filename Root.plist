@@ -6,6 +6,20 @@
     <array>
         <dict>
             <key>cell</key>
+            <string>PSTextFieldCell</string>
+            <key>key</key>
+            <string>SiriGPT_APIKey</string>
+            <key>label</key>
+            <string>OpenAI API Key</string>
+            <key>placeholder</key>
+            <string>sk-...</string>
+            <key>isSecure</key>
+            <true/>
+            <key>default</key>
+            <string></string>
+        </dict>
+        <dict>
+            <key>cell</key>
             <string>PSToggleSwitchCell</string>
             <key>key</key>
             <string>SiriGPT_Enabled</string>

@@ -1,12 +1,12 @@
 # SiriGPT — Jailbreak Deb (iOS 14+, Rootless)
 
-Connects Siri to the ChatGPT app on your iPhone. No API key needed. Siri passes your query to ChatGPT and speaks the answer back.
+Connects Siri to ChatGPT via the OpenAI API directly. No app opens. Siri passes your query to OpenAI and speaks the answer back.
 
 ## Files
 - `Makefile` — Theos build, tweak + preference bundle
 - `control` — deb metadata (depends: substitute, preferenceloader)
-- `Tweak.xm` — Logos hooks into SiriUI, launches ChatGPT app via URL scheme, speaks reply with AVSpeechSynthesizer
-- `SiriGPTPreferences.swift` — SwiftUI toggle in Settings app
+- `Tweak.xm` — Logos hooks into SiriUI, OpenAI API client, AVSpeechSynthesizer speaks reply
+- `SiriGPTPreferences.swift` — SwiftUI settings view in Settings app
 - `Root.plist` / `Info.plist` — preference bundle metadata
 
 ## Build
@@ -16,7 +16,7 @@ export THEOS=$HOME/theos
 make package
 ```
 
-Output: `packages/com.ofx.sirigpt_1.1.0~ios14plus_iphoneos-arm64.deb`
+Output: `packages/com.ofx.sirigpt_1.2.0~ios14plus_iphoneos-arm64.deb`
 
 Install on device:
 ```
@@ -24,11 +24,12 @@ dpkg -i com.ofx.sirigpt_*.deb
 killall -9 SpringBoard
 ```
 
-Open Settings → SiriGPT, enable the toggle. Activate Siri and ask something — ChatGPT app opens to answer, then speaks back.
+Open Settings → SiriGPT, paste your OpenAI API key, toggle on. Activate Siri and ask — Siri sends it to OpenAI directly and speaks the answer back. No app opens.
 
-## Honest limitation
-iOS does not allow one app to silently query another app in the background without the target app's cooperation. ChatGPT's URL scheme will open the app briefly. True silent background querying requires either:
-- ChatGPT app exposing a background URL handler / XPC service, or
-- A direct OpenAI API key (not included here)
+## Gotchas
+- Requires an OpenAI API key (free trial credits for new accounts, then paid per use)
+- SiriUI class names in Tweak.xm may need adjusting per iOS version — use class-dump to verify
+- Requires internet access on the device
+- API key is stored in NSUserDefaults — fine for personal use, not encrypted
 
 6767 — ollie, out.
