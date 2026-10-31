@@ -27,10 +27,14 @@ jobs:
         run: |
           mkdir -p $THEOS/sdks
           cd $THEOS/sdks
-          wget -q https://github.com/theos/sdks/raw/master/SDK/iPhoneOS17.2.sdk.tar.bz2
-          tar -xf iPhoneOS17.2.sdk.tar.bz2
-          mv iPhoneOS17.2.sdk iPhoneOS17.2.sdk
-          rm -f iPhoneOS17.2.sdk.tar.bz2
+          $THEOS/bin/theos-sdk --install=latest 2>/dev/null || true
+          if [ ! -d "$THEOS/sdks/iPhoneOS*.sdk" ]; then
+            curl -L -s -o sdk.tar.bz2 https://github.com/theos/sdks/raw/main/SDK/iPhoneOS17.2.sdk.tar.bz2 || curl -L -s -o sdk.tar.bz2 https://github.com/theos/sdks/raw/master/SDK/iPhoneOS17.2.sdk.tar.bz2 || true
+            if [ -f sdk.tar.bz2 ]; then
+              tar -xf sdk.tar.bz2
+              rm -f sdk.tar.bz2
+            fi
+          fi
 
       - name: Build package
         run: |
