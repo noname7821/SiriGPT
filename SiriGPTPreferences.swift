@@ -19,37 +19,25 @@ class SiriGPTPreferencesListController: PSListController {
 }
 
 struct SiriGPTRootView: View {
-    @AppStorage("SiriGPT_APIKey") var apiKey: String = ""
     @AppStorage("SiriGPT_Enabled") var isEnabled: Bool = false
 
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("OpenAI API Key")) {
-                    SecureField("sk-...", text: $apiKey)
-                    Text("Get one at platform.openai.com")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
                 Section {
                     Toggle("Enable SiriGPT", isOn: $isEnabled)
                 }
 
                 Section(header: Text("How it works")) {
-                    Text("When Siri is active, your query is sent to ChatGPT and the answer is spoken back.")
+                    Text("When Siri is active, your query is sent to the ChatGPT app on your iPhone and the answer is spoken back. No API key needed.")
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
 
-                Section {
-                    Button(action: {
-                        apiKey = ""
-                        isEnabled = false
-                    }) {
-                        Text("Reset Settings")
-                            .foregroundColor(.red)
-                    }
+                Section(header: Text("Requirements")) {
+                    Text("Install the ChatGPT app from the App Store before enabling.")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                 }
             }
             .navigationTitle("SiriGPT")

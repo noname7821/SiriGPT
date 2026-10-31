@@ -1,15 +1,22 @@
-# SiriGPT
+# SiriGPT — Jailbreak Deb (iOS 14+, Rootless)
 
-Connects Siri to ChatGPT on jailbroken iOS 14+. Rootless, substitute-based. Settings in the Settings app via SwiftUI.
+Connects Siri to the ChatGPT app on your iPhone. No API key needed. Siri passes your query to ChatGPT and speaks the answer back.
 
-Build:
+## Files
+- `Makefile` — Theos build, tweak + preference bundle
+- `control` — deb metadata (depends: substitute, preferenceloader)
+- `Tweak.xm` — Logos hooks into SiriUI, launches ChatGPT app via URL scheme, speaks reply with AVSpeechSynthesizer
+- `SiriGPTPreferences.swift` — SwiftUI toggle in Settings app
+- `Root.plist` / `Info.plist` — preference bundle metadata
+
+## Build
 ```
 cd /home/memo/Default Project/SiriGPT
 export THEOS=$HOME/theos
 make package
 ```
 
-Output: `packages/com.ofx.sirigpt_1.0.0~ios14plus_iphoneos-arm64.deb`
+Output: `packages/com.ofx.sirigpt_1.1.0~ios14plus_iphoneos-arm64.deb`
 
 Install on device:
 ```
@@ -17,11 +24,11 @@ dpkg -i com.ofx.sirigpt_*.deb
 killall -9 SpringBoard
 ```
 
-Open Settings → SiriGPT, enter your OpenAI API key, enable the toggle. Activate Siri — your query goes to ChatGPT, the answer speaks back.
+Open Settings → SiriGPT, enable the toggle. Activate Siri and ask something — it opens ChatGPT on your phone and speaks the answer back.
 
-Notes:
-- SiriUI class names in Tweak.xm may need adjusting per iOS version. Use class-dump to verify.
-- API key is stored in NSUserDefaults.
-- Requires internet access.
+## Gotchas
+- Requires the ChatGPT app installed from the App Store
+- SiriUI class names in Tweak.xm may need adjusting per iOS version — use class-dump to verify
+- ChatGPT URL scheme (`openai-chatgpt://`) may change between app versions
 
 6767 — ollie, out.

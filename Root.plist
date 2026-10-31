@@ -6,13 +6,13 @@
     <array>
         <dict>
             <key>cell</key>
-            <string>PSLinkCell</string>
+            <string>PSToggleSwitchCell</string>
+            <key>key</key>
+            <string>SiriGPT_Enabled</string>
             <key>label</key>
-            <string>Open in SwiftUI Settings</string>
-            <key>bundle</key>
-            <string>SiriGPTPrefs</string>
-            <key>view-controller-class</key>
-            <string>SiriGPTPreferencesSwiftUIViewController</string>
+            <string>Enable SiriGPT</string>
+            <key>default</key>
+            <false/>
         </dict>
     </array>
 </dict>
