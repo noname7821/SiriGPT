@@ -12,6 +12,7 @@ SiriGPT_LDFLAGS = -Wl,-undefined,dynamic_lookup
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
+ifdef WITH_PREFS
 BUNDLE_NAME = SiriGPTPrefs
 
 SiriGPTPrefs_FILES = SiriGPTPreferences.swift
@@ -22,6 +23,7 @@ SiriGPTPrefs_ARCHS = arm64 arm64e
 SiriGPTPrefs_DEPLOYMENT_TARGET = 14.0
 
 include $(THEOS_MAKE_PATH)/bundle.mk
+endif
 
 after-install::
 	install.exec "killall -9 SpringBoard"
